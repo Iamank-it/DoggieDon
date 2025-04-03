@@ -1,13 +1,9 @@
 package com.example.doggiedon.register
 
-import android.app.Activity
-import android.os.Binder
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Binding
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -36,6 +32,7 @@ class welcome : AppCompatActivity() {
         runAction()
     }
 
+    //This is RunAction function
     private fun runAction() {
 
         if (action.equals(Action.LOGIN) ) {
