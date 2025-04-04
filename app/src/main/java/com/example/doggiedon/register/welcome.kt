@@ -11,6 +11,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.doggiedon.R
 import com.example.doggiedon.databinding.ActivityWelcomeBinding
 
+private const val TAG = "MainActivity"
+
 class welcome : AppCompatActivity() {
 
     private lateinit var binding : ActivityWelcomeBinding
@@ -36,7 +38,7 @@ class welcome : AppCompatActivity() {
     private fun runAction() {
 
         if (action.equals(Action.LOGIN) ) {
-            Log.d("TAG","Message")
+            Log.d(TAG,"Message")
             binding.footer.visibility = View.VISIBLE
             binding.heading.visibility = View.VISIBLE
             binding.intro.visibility = View.VISIBLE
@@ -69,7 +71,7 @@ class welcome : AppCompatActivity() {
             binding.password.visibility = View.GONE
         }
         if (action.equals(Action.DEFAULT)) {
-            Log.d("TAG","Default")
+            Log.d(TAG,"Default")
             binding.pfp.visibility = View.VISIBLE
             binding.footer.visibility = View.VISIBLE
             binding.heading.visibility = View.VISIBLE
