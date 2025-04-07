@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.doggiedon.register.welcome
+import com.example.doggiedon.register.Welcome
 
 class Splashscreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +19,7 @@ class Splashscreen : AppCompatActivity() {
         //for using this activity as splash screen
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this,welcome::class.java))
+            startActivity(Intent(this, Welcome::class.java))
             finish()
         },3000)
 

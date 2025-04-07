@@ -27,8 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="casual"
-        android:text="Designed By : Ankit"
-        android:textColor="#D50000"
+        android:text="@string/developer"
         android:textSize="16sp"
         android:visibility="visible"
         android:layout_marginBottom="8dp"
@@ -36,158 +35,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/loginbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="Login"
-        android:textAllCaps="true"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_goneMarginTop="460dp" />
-
-    <Button
-        android:id="@+id/registerbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Register"
-        android:textAllCaps="true"
-        android:visibility="visible"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/footer"
-        app:layout_constraintEnd_toEndOf="@id/footer"
-        app:layout_constraintStart_toStartOf="@id/footer" />
-
-    <TextView
-        android:id="@+id/newusertext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_subrayada"
-        android:text="New User?"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/registerbutton"
-        app:layout_constraintEnd_toEndOf="@id/registerbutton"
-        app:layout_constraintStart_toStartOf="@id/registerbutton" />
-
     <TextView
         android:id="@+id/intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/love_ya_like_a_sister"
-        android:text="Stories of Your SuperDog"
+        android:fontFamily="casual"
+        android:text="@string/intro"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/heading"
         app:layout_constraintStart_toStartOf="@+id/heading"
         app:layout_constraintTop_toBottomOf="@+id/heading" />
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:ems="10"
-        android:hint="Username : "
-        android:inputType="textEmailAddress"
-        android:textAlignment="center"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/heading"
-        app:layout_constraintStart_toStartOf="@+id/heading"
-        app:layout_constraintTop_toBottomOf="@+id/heading" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:hint="Password : "
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:tooltipText="Enter Password"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/username"
-        app:layout_constraintStart_toStartOf="@+id/username"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
-
     <ImageView
         android:id="@+id/pfp"
         android:layout_width="387dp"
         android:layout_height="610dp"
-        android:visibility="gone"
+        android:contentDescription="@string/intro"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
-    <EditText
-        android:id="@+id/registeremail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:hint="Email "
-        android:inputType="textEmailAddress"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/registername"
-        app:layout_constraintStart_toStartOf="@+id/registername"
-        app:layout_constraintTop_toBottomOf="@+id/registername" />
-
-    <EditText
-        android:id="@+id/registerphone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:hint="Phone"
-        android:inputType="phone"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/registeremail"
-        app:layout_constraintStart_toStartOf="@+id/registeremail"
-        app:layout_constraintTop_toBottomOf="@+id/registeremail" />
-
-    <EditText
-        android:id="@+id/registerpassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/registerphone"
-        app:layout_constraintStart_toStartOf="@+id/registerphone"
-        app:layout_constraintTop_toBottomOf="@+id/registerphone" />
-
-    <EditText
-        android:id="@+id/registername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="text"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/intro"
-        app:layout_constraintHorizontal_bias="0.433"
-        app:layout_constraintStart_toStartOf="@+id/intro"
-        app:layout_constraintTop_toBottomOf="@+id/intro" />
-
     <Button
-        android:id="@+id/register"
+        android:id="@+id/signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="31dp"
-        android:fontFamily="@font/montserrat_subrayada"
-        android:text="Register"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/registerpassword"
-        app:layout_constraintStart_toStartOf="@+id/registerpassword"
-        app:layout_constraintTop_toBottomOf="@+id/registerpassword" />
+        android:text="@string/signin"
+        app:layout_constraintBottom_toBottomOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
