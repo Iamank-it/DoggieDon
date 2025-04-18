@@ -15,6 +15,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 
+private  const val TAG = "GoogleAuth"
 class GoogleAuthClient(private val context : Context) {
     private val tag = "GoogleSignInClient: "
 
@@ -46,7 +47,7 @@ class GoogleAuthClient(private val context : Context) {
         }
     }
     private suspend fun handleSignIn(result: GetCredentialResponse):Boolean{
-        Log.d("Welcome", "Button clicked and redirected to handle")
+        Log.d(TAG, "Button clicked and redirected to handle")
         val credential=result.credential
         if(
             credential is CustomCredential &&
@@ -56,7 +57,7 @@ class GoogleAuthClient(private val context : Context) {
                 val tokenCredential= GoogleIdTokenCredential.createFrom(credential.data)
                 println(tag + "name: ${tokenCredential.displayName}")
                 println(tag + "email: ${tokenCredential.id}")
-                println(tag + "name: ${tokenCredential.profilePictureUri}")
+                println(tag + "Photo: ${tokenCredential.profilePictureUri}")
 
                 val authCredential = GoogleAuthProvider.getCredential(tokenCredential.idToken,null)
                 val authResult = firebaseAuth.signInWithCredential(authCredential).await()

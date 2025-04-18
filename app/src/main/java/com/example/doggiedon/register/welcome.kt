@@ -44,7 +44,6 @@ class Welcome : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
-
             }
         }
     }

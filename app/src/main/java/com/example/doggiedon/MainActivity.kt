@@ -1,17 +1,16 @@
 package com.example.doggiedon
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import com.example.doggiedon.register.GoogleAuthClient
-import kotlinx.coroutines.launch
+import com.example.doggiedon.register.ProfileInfo
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,15 +22,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val googleAuthClient = GoogleAuthClient(this)
+        val btn1 = findViewById<ImageButton>(R.id.btn_profile)
 
-        val btn1 = findViewById<Button>(R.id.btn_google_signOut_button)
         btn1.setOnClickListener {
-            lifecycleScope.launch {
-
-                googleAuthClient.signOut()
-                finish()
-            }
+            // Launch ProfileInfo activity
+            val intent = Intent(this, ProfileInfo::class.java)
+            startActivity(intent)
         }
 
     }
