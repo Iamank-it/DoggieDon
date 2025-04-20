@@ -2,33 +2,74 @@ package com.example.doggiedon.register
 
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.doggiedon.R
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
+import androidx.core.graphics.createBitmap
 
 class ProfileInfo : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_info)
 
-        val googleAuthClient = GoogleAuthClient(this)
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
 
-        val btn1 = findViewById<Button>(R.id.btn_google_signOut_button)
-        btn1.setOnClickListener {
-            // Show confirmation dialog
-            androidx.appcompat.app.AlertDialog.Builder(this)
+        val signOutBtn = findViewById<Button>(R.id.btn_google_signOut_button)
+        val profilePicBtn = findViewById<ImageButton>(R.id.btn_ProfilePic)
+
+        val emailText = findViewById<TextView>(R.id.text_email)
+        val nameText = findViewById<TextView>(R.id.text_name)
+        val phoneText = findViewById<TextView>(R.id.text_phone)
+        val metaText = findViewById<TextView>(R.id.text_metadata)
+
+        // Set user info
+        user?.let {
+            emailText.text = it.email ?: "No Email"
+            nameText.text = getString(R.string.user_name, it.displayName ?: "N/A")
+            phoneText.text = getString(R.string.user_phone, it.phoneNumber ?: "N/A")
+
+            val metadata = it.metadata
+            val created = metadata?.creationTimestamp?.let { ts ->
+                SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault()).format(Date(ts))
+            } ?: "N/A"
+            val lastSignIn = metadata?.lastSignInTimestamp?.let { ts ->
+                SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault()).format(Date(ts))
+            } ?: "N/A"
+            metaText.text = getString(R.string.account_metadata, created, lastSignIn)
+
+
+            // Set profile picture when clicking the button
+            it.photoUrl?.let { photoUrl ->
+                loadProfileImage(photoUrl.toString(), profilePicBtn)
+            }
+        }
+
+        // Sign out confirmation
+        signOutBtn.setOnClickListener {
+            AlertDialog.Builder(this)
                 .setTitle("Sign Out")
                 .setMessage("Are you sure you want to sign out?")
                 .setPositiveButton("Yes") { _, _ ->
-                    // Sign out and redirect to Welcome
                     lifecycleScope.launch {
-                        googleAuthClient.signOut()
+                        GoogleAuthClient(this@ProfileInfo).signOut()
                         startActivity(Intent(this@ProfileInfo, Welcome::class.java))
                         finish()
                     }
@@ -37,9 +78,8 @@ class ProfileInfo : AppCompatActivity() {
                 .show()
         }
 
-        val profileButton = findViewById<ImageButton>(R.id.btn_ProfilePic)
-
-        profileButton.setOnClickListener {
+        // Zoom-in dialog on profile picture button tap
+        profilePicBtn.setOnClickListener {
             val dialog = Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
             dialog.setContentView(R.layout.dialog_enlarged_image)
 
@@ -47,22 +87,18 @@ class ProfileInfo : AppCompatActivity() {
             val closeBtn = dialog.findViewById<ImageView>(R.id.btn_close)
             val root = dialog.findViewById<FrameLayout>(R.id.dialog_root)
 
-            imageView.setImageResource(R.drawable.dogpfp)
-            // Start with scale 0
+            // Load profile picture into the dialog (same as main profile image)
+            user?.photoUrl?.let { photoUrl ->
+                loadProfileImage(photoUrl.toString(), imageView)
+            }
+
+            // Animate zoom-in
             imageView.scaleX = 0.7f
             imageView.scaleY = 0.7f
             imageView.alpha = 0f
+            imageView.animate().scaleX(1f).scaleY(1f).alpha(1f).setDuration(300).start()
 
-            // Animate zoom-in
-            imageView.animate()
-                .scaleX(1f)
-                .scaleY(1f)
-                .alpha(1f)
-                .setDuration(300)
-                .start()
-
-            // Close actions
-            val dismissWithZoomOut = {
+            val dismissZoom = {
                 imageView.animate()
                     .scaleX(0.7f)
                     .scaleY(0.7f)
@@ -72,10 +108,60 @@ class ProfileInfo : AppCompatActivity() {
                     .start()
             }
 
-            closeBtn.setOnClickListener { dismissWithZoomOut() }
-            root.setOnClickListener { dismissWithZoomOut() }
+            closeBtn.setOnClickListener { dismissZoom() }
+            root.setOnClickListener { dismissZoom() }
 
             dialog.show()
         }
     }
+
+    // Function to load image using coroutines
+    private fun loadProfileImage(url: String, imageView: ImageView) {
+        lifecycleScope.launch {
+            val bitmap = withContext(Dispatchers.IO) {
+                loadImageFromUrl(url)
+            }
+            bitmap?.let {
+                val circularBitmap = getCircularBitmap(it)
+                imageView.setImageBitmap(circularBitmap)
+            }
+        }
+    }
+
+
+    // Function to download image from URL
+    private fun loadImageFromUrl(urlString: String): Bitmap? {
+        var bitmap: Bitmap? = null
+        try {
+            val url = URL(urlString)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val inputStream: InputStream = connection.inputStream
+            bitmap = BitmapFactory.decodeStream(inputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return bitmap
+    }
+}
+private fun getCircularBitmap(bitmap: Bitmap): Bitmap {
+    val size = minOf(bitmap.width, bitmap.height)
+    val output = createBitmap(size, size)
+
+    val canvas = android.graphics.Canvas(output)
+    val paint = android.graphics.Paint().apply {
+        isAntiAlias = true
+    }
+
+    val rect = android.graphics.Rect(0, 0, size, size)
+    val rectF = android.graphics.RectF(rect)
+
+    canvas.drawARGB(0, 0, 0, 0)
+    canvas.drawOval(rectF, paint)
+
+    paint.xfermode = android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN)
+    canvas.drawBitmap(bitmap, null, rect, paint)
+
+    return output
 }

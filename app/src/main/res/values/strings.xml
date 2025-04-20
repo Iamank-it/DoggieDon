@@ -4,4 +4,10 @@
     <string name="developer">Designed By : Ankit</string>
     <string name="signin">Sign In With Google</string>
     <string name="client_id">374772074763-l3lmmij3i4844u8ep5p1skg9pktua182.apps.googleusercontent.com</string>
+    <string name="user_name">Name: %1$s</string>
+    <string name="user_phone">Phone: %1$s</string>
+    <string name="account_created">Created on: %1$s</string>
+    <string name="last_signin">Last Sign-in: %1$s</string>
+    <string name="account_metadata">Created on: %1$s&#10;\n\n\nLast sign-in: %2$s</string>
+
 </resources>
