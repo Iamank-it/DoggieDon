@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/lightredpaper"
+    android:background="@color/md_theme_background"
     tools:context=".register.ProfileInfo">
 
     <!-- Heading -->
@@ -69,7 +69,7 @@
         android:layout_width="364dp"
         android:layout_height="47dp"
         android:layout_marginTop="12dp"
-        android:fontFamily="cursive"
+        android:fontFamily="sans-serif-condensed-medium"
         android:padding="8dp"
         android:text="Name: "
         android:textSize="20sp"
@@ -82,7 +82,7 @@
         android:id="@+id/text_phone"
         android:layout_width="362dp"
         android:layout_height="48dp"
-        android:fontFamily="cursive"
+        android:fontFamily="sans-serif-condensed-medium"
         android:padding="8dp"
         android:text="Phone: "
         android:textSize="20sp"
@@ -96,7 +96,7 @@
         android:layout_width="361dp"
         android:layout_height="170dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="cursive"
+        android:fontFamily="sans-serif-condensed-medium"
         android:padding="8dp"
         android:text="Created on: \nLast Sign-in:"
         android:textSize="20sp"

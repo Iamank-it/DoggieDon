@@ -140,4 +140,7 @@
     <color name="md_theme_surfaceContainer_highContrast">#E0E4DB</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#D1D6CD</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#C3C8C0</color>
+    <color name="blue">#2962FF</color>
+    <color name="black">#000000</color>
+    <color name="datecolor">#F40000</color>
 </resources>
