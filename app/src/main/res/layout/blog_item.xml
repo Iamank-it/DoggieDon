@@ -2,19 +2,23 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/heading"
     android:layout_width="match_parent"
-    android:layout_height="264dp"
+    android:layout_height="wrap_content"
     android:background="#D7E2E6"
     android:backgroundTint="#EDD9D9"
-    android:elevation="5dp"
-    app:cardCornerRadius="9dp">
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="8dp">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/cardHeading"
             android:layout_width="266dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
@@ -32,18 +36,19 @@
             android:layout_width="34dp"
             android:layout_height="34dp"
             app:cardCornerRadius="100dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView">
+            app:layout_constraintBottom_toBottomOf="@+id/cardUsername"
+            app:layout_constraintEnd_toStartOf="@+id/cardUsername"
+            app:layout_constraintTop_toTopOf="@+id/cardUsername">
 
             <ImageView
+                android:id="@+id/cardPfp"
                 android:layout_width="36dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/dogpfp" />
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/cardUsername"
             android:layout_width="70dp"
             android:layout_height="44dp"
             android:layout_marginTop="13dp"
@@ -59,15 +64,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/cardDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium_italic"
             android:text="May25,2025"
             android:textColor="@color/datecolor"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/cardUsername"
             app:layout_constraintStart_toStartOf="@+id/cardView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/cardUsername" />
 
         <View
             android:id="@+id/divider"
@@ -77,14 +82,14 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="9dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintEnd_toEndOf="@+id/cardUsername"
+            app:layout_constraintStart_toStartOf="@+id/cardHeading"
+            app:layout_constraintTop_toBottomOf="@+id/cardDate" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/cardPost"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="9dp"
@@ -99,28 +104,28 @@
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnCardReadmore"
             android:layout_width="180dp"
             android:layout_height="50dp"
             android:text="Read more"
             app:cornerRadius="9dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintStart_toStartOf="@+id/cardPost"
+            app:layout_constraintTop_toBottomOf="@+id/cardPost" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/cardLikecount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
             android:text="20"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
-            app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button" />
+            app:layout_constraintBottom_toBottomOf="@+id/btnCardReadmore"
+            app:layout_constraintStart_toEndOf="@+id/btnCardReadmore"
+            app:layout_constraintTop_toTopOf="@+id/btnCardReadmore" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/btnCardLike"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
@@ -128,13 +133,13 @@
             android:background="@null"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@+id/textView7"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="@+id/textView7"
+            app:layout_constraintBottom_toBottomOf="@+id/cardLikecount"
+            app:layout_constraintStart_toEndOf="@+id/cardLikecount"
+            app:layout_constraintTop_toTopOf="@+id/cardLikecount"
             app:srcCompat="@drawable/heart" />
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/btnCardSave"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginStart="16dp"
@@ -142,9 +147,9 @@
             android:background="@null"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-            app:layout_constraintStart_toEndOf="@+id/imageButton2"
-            app:layout_constraintTop_toTopOf="@+id/imageButton2"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCardLike"
+            app:layout_constraintStart_toEndOf="@+id/btnCardLike"
+            app:layout_constraintTop_toTopOf="@+id/btnCardLike"
             app:srcCompat="@drawable/save" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
