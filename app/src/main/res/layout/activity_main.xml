@@ -41,7 +41,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="16dp"
-        android:background="#D7E2E6"
+        android:background="@drawable/bg_white_rounded"
         android:backgroundTint="#EDD9D9"
         android:iconifiedByDefault="false"
         android:queryHint="Search"

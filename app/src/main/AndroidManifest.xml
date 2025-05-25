@@ -15,6 +15,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".activity.BlogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".register.ProfileInfo"
             android:exported="false" />
         <activity
