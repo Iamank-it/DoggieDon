@@ -8,6 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.doggiedon.adapter.BlogAdapter
+import com.example.doggiedon.model.BlogItemModel
 import com.example.doggiedon.register.ProfileInfo
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
@@ -22,58 +26,94 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
             insets
         }
 
+        val recyclerView = findViewById<RecyclerView>(R.id.blogRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val data = listOf(
+            BlogItemModel(
+                heading = "The Day We Found Bruno",
+                username = "New Blogger",
+                date = "May 25, 2025",
+                post = "It was a hot summer afternoon when I first saw him—curled up under a parked scooter near our apartment gate...",
+                likecount = 20
+            ),
+            BlogItemModel(
+                heading = "Bruno’s First Night",
+                username = "Caretaker",
+                date = "May 26, 2025",
+                post = "We made a small bed from cardboard and some blankets to keep Bruno warm for the night...",
+                likecount = 18
+            ),
+            BlogItemModel(
+                heading = "The Day We Found Bruno",
+                username = "New Blogger",
+                date = "May 25, 2025",
+                post = "It was a hot summer afternoon when I first saw him—curled up under a parked scooter near our apartment gate...",
+                likecount = 20
+            ),
+            BlogItemModel(
+                heading = "Bruno’s First Night",
+                username = "Caretaker",
+                date = "May 26, 2025",
+                post = "We made a small bed from cardboard and some blankets to keep Bruno warm for the night...",
+                likecount = 18
+            ),
+            BlogItemModel(
+                heading = "The Day We Found Bruno",
+                username = "New Blogger",
+                date = "May 25, 2025",
+                post = "It was a hot summer afternoon when I first saw him—curled up under a parked scooter near our apartment gate...",
+                likecount = 20
+            ),
+            BlogItemModel(
+                heading = "Bruno’s First Night The Day We Found Bruno The Day We Found Bruno",
+                username = "Caretaker",
+                date = "May 26, 2025",
+                post = "We made a small bed from cardboard and some blankets to keep Bruno warm for the night...",
+                likecount = 18
+            )
+        )
+
+        recyclerView.adapter = BlogAdapter(data)
+
         val btnProfile = findViewById<ImageButton>(R.id.btn_profile)
 
-        // Load profile picture
-        val user = FirebaseAuth.getInstance().currentUser
-        val photoUrl = user?.photoUrl?.toString()
-
-        photoUrl?.let {
+        FirebaseAuth.getInstance().currentUser?.photoUrl?.toString()?.let {
             scope.launch {
-                val bitmap = loadImageFromUrl(it)
-                bitmap?.let { bmp ->
-                    val circular = getCircularBitmap(bmp)
-                    btnProfile.setImageBitmap(circular)
+                loadImageFromUrl(it)?.let { bmp ->
+                    btnProfile.setImageBitmap(getCircularBitmap(bmp))
                 }
             }
         }
 
-        // Profile button click
         btnProfile.setOnClickListener {
-            val intent = Intent(this, ProfileInfo::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ProfileInfo::class.java))
         }
     }
 
     private suspend fun loadImageFromUrl(url: String): Bitmap? = withContext(Dispatchers.IO) {
-        try {
-            val stream = URL(url).openStream()
-            BitmapFactory.decodeStream(stream)
+        return@withContext try {
+            BitmapFactory.decodeStream(URL(url).openStream())
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
     }
 
-    private fun getCircularBitmap(srcBitmap: Bitmap): Bitmap {
-        val size = minOf(srcBitmap.width, srcBitmap.height)
+    private fun getCircularBitmap(src: Bitmap): Bitmap {
+        val size = minOf(src.width, src.height)
         val output = createBitmap(size, size)
-
         val canvas = Canvas(output)
-        val paint = Paint().apply {
-            isAntiAlias = true
-            shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            shader = BitmapShader(src, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
         }
-
-        val radius = size / 2f
-        canvas.drawCircle(radius, radius, radius, paint)
-
+        canvas.drawCircle(size / 2f, size / 2f, size / 2f, paint)
         return output
     }
 

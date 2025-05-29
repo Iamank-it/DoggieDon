@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/cardHeading"
-            android:layout_width="266dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_marginTop="13dp"
@@ -42,7 +42,7 @@
 
             <ImageView
                 android:id="@+id/cardPfp"
-                android:layout_width="36dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/dogpfp" />
         </androidx.cardview.widget.CardView>

@@ -1,42 +1,36 @@
 package com.example.doggiedon.adapter
-import com.example.doggiedon.R
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.doggiedon.Model.BlogItemModel
+import com.example.doggiedon.R
 import com.example.doggiedon.databinding.BlogItemBinding
+import com.example.doggiedon.model.BlogItemModel
 
 class BlogAdapter(private val items: List<BlogItemModel>) :
-    RecyclerView.Adapter<BlogAdapter.BLogViewHolder>() {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): BLogViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = BlogItemBinding.inflate(inflater, parent, false)
-        return BLogViewHolder(binding)
+    RecyclerView.Adapter<BlogAdapter.BlogViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlogViewHolder {
+        val binding = BlogItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return BlogViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: BLogViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: BlogViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
-    inner class BLogViewHolder(private val binding: BlogItemBinding): RecyclerView.ViewHolder(binding.root){
+    inner class BlogViewHolder(private val binding: BlogItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bind(model: BlogItemModel) {
             binding.cardHeading.text = model.heading
             binding.cardUsername.text = model.username
             binding.cardDate.text = model.date
             binding.cardPost.text = model.post
-            binding.cardPfp.setImageResource(R.drawable.dogpfp)
             binding.cardLikecount.text = model.likecount.toString()
+            binding.cardPfp.setImageResource(R.drawable.dogpfp) // static image
         }
-
     }
 }
