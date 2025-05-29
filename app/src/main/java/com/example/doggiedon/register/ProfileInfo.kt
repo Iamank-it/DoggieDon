@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.core.graphics.createBitmap
+import com.example.doggiedon.activity.BlogActivity
 
 class ProfileInfo : AppCompatActivity() {
 
@@ -32,13 +34,16 @@ class ProfileInfo : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
 
-        val signOutBtn = findViewById<Button>(R.id.btn_google_signOut_button)
+        val signOutBtn = findViewById<ImageView>(R.id.btn_google_signOut_button)
         val profilePicBtn = findViewById<ImageButton>(R.id.btn_ProfilePic)
 
         val emailText = findViewById<TextView>(R.id.text_email)
         val nameText = findViewById<TextView>(R.id.text_name)
         val phoneText = findViewById<TextView>(R.id.text_phone)
         val metaText = findViewById<TextView>(R.id.text_metadata)
+
+        val addBlogBtn = findViewById<Button>(R.id.btn_add_blog)
+        val viewBlogBtn = findViewById<Button>(R.id.btn_view_blog)
 
         // Set user info
         user?.let {
@@ -61,6 +66,11 @@ class ProfileInfo : AppCompatActivity() {
                 loadProfileImage(photoUrl.toString(), profilePicBtn)
             }
         }
+
+        //Add Blog button click handle
+        addBlogBtn.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(this@ProfileInfo, BlogActivity::class.java))
+        })
 
         // Sign out confirmation
         signOutBtn.setOnClickListener {
