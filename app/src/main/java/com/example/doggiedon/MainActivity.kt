@@ -4,8 +4,10 @@ import android.content.Intent
 import android.graphics.*
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.createBitmap
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,12 +16,16 @@ import com.example.doggiedon.adapter.BlogAdapter
 import com.example.doggiedon.model.BlogItemModel
 import com.example.doggiedon.register.ProfileInfo
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.*
+import com.google.firebase.firestore.FirebaseFirestore
 import java.net.URL
-import androidx.core.graphics.createBitmap
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.Main + Job())
+    private lateinit var recyclerView: RecyclerView
+    private val blogList = mutableListOf<BlogItemModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,55 +38,10 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.blogRecyclerView)
+        recyclerView = findViewById(R.id.blogRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val data = listOf(
-            BlogItemModel(
-                heading = "The Day We Found Bruno",
-                username = "New Blogger",
-                date = "May 25, 2025",
-                post = "It was a hot summer afternoon when I first saw him—curled up under a parked scooter near our apartment gate...",
-                likecount = 20
-            ),
-            BlogItemModel(
-                heading = "Bruno’s First Night",
-                username = "Caretaker",
-                date = "May 26, 2025",
-                post = "We made a small bed from cardboard and some blankets to keep Bruno warm for the night...",
-                likecount = 18
-            ),
-            BlogItemModel(
-                heading = "The Day We Found Bruno",
-                username = "New Blogger",
-                date = "May 25, 2025",
-                post = "It was a hot summer afternoon when I first saw him—curled up under a parked scooter near our apartment gate...",
-                likecount = 20
-            ),
-            BlogItemModel(
-                heading = "Bruno’s First Night",
-                username = "Caretaker",
-                date = "May 26, 2025",
-                post = "We made a small bed from cardboard and some blankets to keep Bruno warm for the night...",
-                likecount = 18
-            ),
-            BlogItemModel(
-                heading = "The Day We Found Bruno",
-                username = "New Blogger",
-                date = "May 25, 2025",
-                post = "It was a hot summer afternoon when I first saw him—curled up under a parked scooter near our apartment gate...",
-                likecount = 20
-            ),
-            BlogItemModel(
-                heading = "Bruno’s First Night The Day We Found Bruno The Day We Found Bruno",
-                username = "Caretaker",
-                date = "May 26, 2025",
-                post = "We made a small bed from cardboard and some blankets to keep Bruno warm for the night...",
-                likecount = 18
-            )
-        )
-
-        recyclerView.adapter = BlogAdapter(data)
+        fetchBlogsFromFirestore()
 
         val btnProfile = findViewById<ImageButton>(R.id.btn_profile)
 
@@ -95,6 +56,41 @@ class MainActivity : AppCompatActivity() {
         btnProfile.setOnClickListener {
             startActivity(Intent(this, ProfileInfo::class.java))
         }
+    }
+
+    private fun fetchBlogsFromFirestore() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("blogs")
+            .get()
+            .addOnSuccessListener { result ->
+                blogList.clear()
+                for (document in result) {
+                    val heading = document.getString("heading") ?: ""
+                    val username = document.getString("username") ?: ""
+                    val post = document.getString("post") ?: ""
+                    val likecount = document.getLong("likecount")?.toInt() ?: 0
+
+                    val timestamp = document.getTimestamp("date")
+                    val dateString = timestamp?.toDate()?.let {
+                        SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(it)
+                    } ?: ""
+
+                    val blogItem = BlogItemModel(
+                        heading = heading,
+                        username = username,
+                        date = dateString,
+                        post = post,
+                        likecount = likecount
+                    )
+
+                    blogList.add(blogItem)
+                }
+
+                recyclerView.adapter = BlogAdapter(blogList)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Failed to load blogs: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private suspend fun loadImageFromUrl(url: String): Bitmap? = withContext(Dispatchers.IO) {
