@@ -12,19 +12,21 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.doggiedon.adapter.BlogAdapter
 import com.example.doggiedon.model.BlogItemModel
 import com.example.doggiedon.register.ProfileInfo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.*
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.Main + Job())
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val blogList = mutableListOf<BlogItemModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +40,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
         recyclerView = findViewById(R.id.blogRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            fetchBlogsFromFirestore()
+        }
 
         fetchBlogsFromFirestore()
 
@@ -59,6 +66,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchBlogsFromFirestore() {
+        swipeRefreshLayout.isRefreshing = true
+
         val db = FirebaseFirestore.getInstance()
         db.collection("blogs")
             .get()
@@ -87,8 +96,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 recyclerView.adapter = BlogAdapter(blogList)
+                swipeRefreshLayout.isRefreshing = false
             }
             .addOnFailureListener { exception ->
+                swipeRefreshLayout.isRefreshing = false
                 Toast.makeText(this, "Failed to load blogs: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }

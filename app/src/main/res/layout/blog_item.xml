@@ -110,19 +110,20 @@
             android:text="Read more"
             app:cornerRadius="9dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/cardPost"
-            app:layout_constraintTop_toBottomOf="@+id/cardPost" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardPost"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/cardLikecount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="70dp"
             android:text="20"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/btnCardReadmore"
-            app:layout_constraintStart_toEndOf="@+id/btnCardReadmore"
-            app:layout_constraintTop_toTopOf="@+id/btnCardReadmore" />
+            app:layout_constraintTop_toTopOf="@+id/btnCardReadmore"
+            app:layout_constraintVertical_bias="0.714"
+            tools:layout_editor_absoluteX="16dp" />
 
         <ImageButton
             android:id="@+id/btnCardLike"
