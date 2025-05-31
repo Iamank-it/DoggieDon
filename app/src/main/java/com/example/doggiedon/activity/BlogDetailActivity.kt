@@ -24,7 +24,7 @@ class BlogDetailActivity : AppCompatActivity() {
 
         // Set views
         textHeading.text = heading
-        textAuthor.text = "by $author"
+        textAuthor.text = getString(R.string.blog_detail_username,author)
         textDate.text = date
         textPost.text = post
 

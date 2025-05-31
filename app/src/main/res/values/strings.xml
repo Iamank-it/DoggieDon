@@ -11,4 +11,5 @@
     <string name="account_metadata">Created on: %1$s&#10;\n\n\nLast sign-in: %2$s</string>
     <string name="blog_count_display">Blogs Posted: %1$d</string>
     <string name="no_user_blogs">This user has not posted any blogs yet.</string>
+    <string name="blog_detail_username">Author: %1$s</string>
 </resources>

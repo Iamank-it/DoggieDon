@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/cardHeading"
-            android:layout_width="220dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:layout_marginTop="13dp"
@@ -29,7 +29,9 @@
             android:textColor="@color/blue"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cardView"/>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"

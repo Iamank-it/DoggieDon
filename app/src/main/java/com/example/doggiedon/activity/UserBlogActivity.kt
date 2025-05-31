@@ -1,5 +1,6 @@
 package com.example.doggiedon.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -40,6 +41,7 @@ class UserBlogsActivity : AppCompatActivity() {
         fetchUserBlogs()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun fetchUserBlogs() {
         swipeRefreshLayout.isRefreshing = true
 
