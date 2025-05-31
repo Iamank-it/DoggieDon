@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.core.graphics.createBitmap
 import com.example.doggiedon.activity.BlogActivity
+import com.example.doggiedon.activity.UserBlogsActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileInfo : AppCompatActivity() {
 
@@ -45,6 +47,8 @@ class ProfileInfo : AppCompatActivity() {
         val addBlogBtn = findViewById<Button>(R.id.btn_add_blog)
         val viewBlogBtn = findViewById<Button>(R.id.btn_view_blog)
 
+
+
         // Set user info
         user?.let {
             emailText.text = it.email ?: "No Email"
@@ -67,9 +71,28 @@ class ProfileInfo : AppCompatActivity() {
             }
         }
 
+        //number of blog
+        val user1 = FirebaseAuth.getInstance().currentUser
+        if (user1 != null) {
+            fetchBlogCountForUser(user1.uid)
+        }
+
+
         //Add Blog button click handle
         addBlogBtn.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this@ProfileInfo, BlogActivity::class.java))
+        })
+
+        //view blog button click handle
+        viewBlogBtn.setOnClickListener(View.OnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                val intent = Intent(this, UserBlogsActivity::class.java)
+                intent.putExtra("uid", user.uid)  // Send UID explicitly
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            }
         })
 
         // Sign out confirmation
@@ -136,6 +159,24 @@ class ProfileInfo : AppCompatActivity() {
                 imageView.setImageBitmap(circularBitmap)
             }
         }
+    }
+
+
+    //Function to count number of blogs
+    private fun fetchBlogCountForUser(uid: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("blogs")
+            .whereEqualTo("uid", uid)
+            .get()
+            .addOnSuccessListener { result ->
+                val count = result.size()
+                val blogCountTextView = findViewById<TextView>(R.id.text_blog_count)
+                blogCountTextView.text = getString(R.string.blog_count_display, count)
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load blog count", Toast.LENGTH_SHORT).show()
+            }
     }
 
 

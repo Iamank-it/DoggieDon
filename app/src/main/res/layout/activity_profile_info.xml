@@ -107,6 +107,20 @@
         app:layout_constraintStart_toStartOf="@+id/text_name"
         app:layout_constraintTop_toBottomOf="@id/text_name" />
 
+    <TextView
+        android:id="@+id/text_blog_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:padding="8dp"
+        android:text="Blogs Posted: 0"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/text_metadata"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
     <!-- Metadata Text -->
     <TextView
         android:id="@+id/text_metadata"

@@ -44,10 +44,12 @@ class BlogActivity : AppCompatActivity() {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         val username = currentUser?.displayName ?: "Anonymous"
+        val uid = currentUser?.uid ?: ""
 
         val blogMap = hashMapOf(
             "heading" to heading,
             "username" to username,
+            "uid" to uid,
             "date" to Timestamp.now(),
             "post" to post,
             "likecount" to 0
