@@ -12,4 +12,17 @@
     <string name="blog_count_display">Blogs Posted: %1$d</string>
     <string name="no_user_blogs">This user has not posted any blogs yet.</string>
     <string name="blog_detail_username">Author: %1$s</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="user_email_com">user@email.com</string>
+    <string name="name">Name:</string>
+    <string name="phone">Phone:</string>
+    <string name="created_on_last_sign_in">Created on: \nLast Sign-in:</string>
+    <string name="blogs_posted_0">Blogs Posted: 0</string>
+    <string name="view_blogs">View Blogs</string>
+    <string name="logout">Logout</string>
+    <string name="post_blog">Post Blog</string>
+    <string name="write_your_post_here">Write your post here...</string>
+    <string name="blog_title">Blog Title</string>
+    <string name="add_your_blog_here">Add your blog here</string>
+    <string name="profile">Profile</string>
 </resources>

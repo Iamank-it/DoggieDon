@@ -6,78 +6,108 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
-    <!-- Heading TextView at top left -->
+    <!-- App Name at Top Left -->
     <TextView
         android:id="@+id/heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:fontFamily="casual"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Profile button at top right -->
+    <!-- Profile Button at Top Right -->
     <ImageButton
         android:id="@+id/btn_profile"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/circular_button_background"
+        android:contentDescription="@string/profile"
         android:padding="0dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/dogpfp" />
+        app:srcCompat="@drawable/dogpfp"
+        tools:ignore="TouchTargetSizeCheck" />
 
-    <!-- ScrollView containing blog entry fields -->
+    <!-- Subheading: Add your blog here -->
+    <TextView
+        android:id="@+id/subHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/add_your_blog_here"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/heading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Scrollable Content -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/heading"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/subHeading"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="16dp"
-        >
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Blog Title -->
             <EditText
                 android:id="@+id/etHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Heading"
-                android:inputType="textCapWords" />
+                android:autofillHints="Heading,Title"
+                android:hint="@string/blog_title"
+                android:inputType="textCapWords"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="12dp" />
 
+            <!-- Blog Content -->
             <EditText
                 android:id="@+id/etPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
-                android:hint="Write your post here"
+                android:autofillHints="Blog,Description"
+                android:hint="@string/write_your_post_here"
                 android:inputType="textMultiLine"
-                android:maxLines="8"
-                android:minLines="5"
-                android:layout_marginTop="12dp" />
+                android:gravity="top"
+                android:minLines="6"
+                android:maxLines="10"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="16dp" />
 
+            <!-- Submit Button -->
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add Blog"
-                android:layout_marginTop="16dp" />
+                android:text="@string/post_blog"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 

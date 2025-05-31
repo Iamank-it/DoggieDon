@@ -23,6 +23,7 @@ import java.util.*
 import androidx.core.graphics.createBitmap
 import com.example.doggiedon.activity.BlogActivity
 import com.example.doggiedon.activity.UserBlogsActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileInfo : AppCompatActivity() {
@@ -44,7 +45,6 @@ class ProfileInfo : AppCompatActivity() {
         val phoneText = findViewById<TextView>(R.id.text_phone)
         val metaText = findViewById<TextView>(R.id.text_metadata)
 
-        val addBlogBtn = findViewById<Button>(R.id.btn_add_blog)
         val viewBlogBtn = findViewById<Button>(R.id.btn_view_blog)
 
 
@@ -77,11 +77,6 @@ class ProfileInfo : AppCompatActivity() {
             fetchBlogCountForUser(user1.uid)
         }
 
-
-        //Add Blog button click handle
-        addBlogBtn.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(this@ProfileInfo, BlogActivity::class.java))
-        })
 
         //view blog button click handle
         viewBlogBtn.setOnClickListener(View.OnClickListener {
