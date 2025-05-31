@@ -1,6 +1,8 @@
 package com.example.doggiedon.activity
 
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +19,9 @@ class UserBlogsActivity : AppCompatActivity() {
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyTextView: TextView
     private val blogList = mutableListOf<BlogItemModel>()
-
+    private lateinit var adapter: BlogAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +29,11 @@ class UserBlogsActivity : AppCompatActivity() {
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshUserBlogs)
         recyclerView = findViewById(R.id.userBlogRecyclerView)
+        emptyTextView = findViewById(R.id.text_empty_blogs) // Add this to layout
+
         recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = BlogAdapter(blogList)
+        recyclerView.adapter = adapter
 
         swipeRefreshLayout.setOnRefreshListener { fetchUserBlogs() }
 
@@ -40,7 +47,7 @@ class UserBlogsActivity : AppCompatActivity() {
         if (uid.isNullOrEmpty()) {
             Toast.makeText(this, "UID not available", Toast.LENGTH_SHORT).show()
             swipeRefreshLayout.isRefreshing = false
-            finish() // Exit safely
+            finish()
             return
         }
 
@@ -72,13 +79,15 @@ class UserBlogsActivity : AppCompatActivity() {
                     )
                 }
 
-                recyclerView.adapter = BlogAdapter(blogList)
+                adapter.notifyDataSetChanged()
                 swipeRefreshLayout.isRefreshing = false
+
+                // Show message if no blogs posted
+                emptyTextView.visibility = if (blogList.isEmpty()) View.VISIBLE else View.GONE
             }
             .addOnFailureListener {
                 swipeRefreshLayout.isRefreshing = false
                 Toast.makeText(this, "Failed to fetch blogs: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
 }

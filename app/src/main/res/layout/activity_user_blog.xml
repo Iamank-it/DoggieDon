@@ -49,6 +49,16 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:padding="8dp" />
+        <TextView
+            android:id="@+id/text_empty_blogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_user_blogs"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:visibility="gone"
+            android:textColor="@color/black"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
