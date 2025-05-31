@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.core.graphics.createBitmap
 import com.example.doggiedon.activity.BlogActivity
-import com.example.doggiedon.activity.UserBlogsActivity
+import com.example.doggiedon.activity.UserBlogActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -82,7 +82,7 @@ class ProfileInfo : AppCompatActivity() {
         viewBlogBtn.setOnClickListener(View.OnClickListener {
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
-                val intent = Intent(this, UserBlogsActivity::class.java)
+                val intent = Intent(this, UserBlogActivity::class.java)
                 intent.putExtra("uid", user.uid)  // Send UID explicitly
                 startActivity(intent)
             } else {
