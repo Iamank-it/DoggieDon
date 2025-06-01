@@ -25,4 +25,8 @@
     <string name="blog_title">Blog Title</string>
     <string name="add_your_blog_here">Add your blog here</string>
     <string name="profile">Profile</string>
+    <string name="saved_blogs">Saved Blogs</string>
+    <string name="save">Save</string>
+    <string name="like">Like</string>
+    <string name="no_saved_blogs">No Saved Blog</string>
 </resources>

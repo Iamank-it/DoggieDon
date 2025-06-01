@@ -112,7 +112,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="4dp"
                 android:background="@null"
-                android:contentDescription="Like"
+                android:contentDescription="@string/like"
                 android:scaleType="centerInside"
                 android:padding="2dp"
                 android:src="@drawable/heart"
@@ -122,7 +122,7 @@
                 android:id="@+id/cardLikecount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:layout_marginEnd="12dp"
@@ -134,11 +134,11 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="4dp"
                 android:background="@null"
-                android:contentDescription="Save"
+                android:contentDescription="@string/save"
                 android:scaleType="centerInside"
                 android:padding="2dp"
                 android:src="@drawable/save"
-                android:tint="@color/black" />
+                app:tint="@color/black" />
 
 
         </LinearLayout>

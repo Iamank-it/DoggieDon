@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.doggiedon.activity.BlogActivity
+import com.example.doggiedon.activity.SavedBlogActivity
 import com.example.doggiedon.adapter.BlogAdapter
 import com.example.doggiedon.model.BlogItemModel
 import com.example.doggiedon.register.ProfileInfo
@@ -40,6 +41,11 @@ class MainActivity : AppCompatActivity() {
         val fabAddBlog = findViewById<FloatingActionButton>(R.id.fab_add_blog)
         fabAddBlog.setOnClickListener {
             startActivity(Intent(this, BlogActivity::class.java))
+        }
+        //saved Blog click handle
+        val fabSavedBlog = findViewById<FloatingActionButton>(R.id.fab_saved_blog)
+        fabSavedBlog.setOnClickListener {
+            startActivity(Intent(this, SavedBlogActivity::class.java))
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { view, insets ->
@@ -77,40 +83,59 @@ class MainActivity : AppCompatActivity() {
         swipeRefreshLayout.isRefreshing = true
 
         val db = FirebaseFirestore.getInstance()
-        db.collection("blogs")
+        val currentUid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        // Fetch saved blog IDs first
+        db.collection("users").document(currentUid)
+            .collection("savedBlogs")
             .get()
-            .addOnSuccessListener { result ->
-                blogList.clear()
-                for (document in result) {
-                    val heading = document.getString("heading") ?: ""
-                    val username = document.getString("username") ?: ""
-                    val post = document.getString("post") ?: ""
-                    val likecount = document.getLong("likecount")?.toInt() ?: 0
+            .addOnSuccessListener { savedResult ->
+                val savedBlogIds = savedResult.documents.map { it.id }.toSet()
 
-                    val timestamp = document.getTimestamp("date")
-                    val dateString = timestamp?.toDate()?.let {
-                        SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(it)
-                    } ?: ""
+                db.collection("blogs")
+                    .get()
+                    .addOnSuccessListener { result ->
+                        blogList.clear()
+                        for (document in result) {
+                            val blogId = document.id
+                            val heading = document.getString("heading") ?: ""
+                            val username = document.getString("username") ?: ""
+                            val post = document.getString("post") ?: ""
+                            val likecount = document.getLong("likecount")?.toInt() ?: 0
 
-                    val blogItem = BlogItemModel(
-                        heading = heading,
-                        username = username,
-                        date = dateString,
-                        post = post,
-                        likecount = likecount
-                    )
+                            val timestamp = document.getTimestamp("date")
+                            val dateString = timestamp?.toDate()?.let {
+                                SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(it)
+                            } ?: ""
 
-                    blogList.add(blogItem)
-                }
+                            blogList.add(
+                                BlogItemModel(
+                                    heading = heading,
+                                    username = username,
+                                    date = dateString,
+                                    post = post,
+                                    likecount = likecount,
+                                    isSaved = savedBlogIds.contains(blogId),
+                                    blogId = blogId
+                                )
+                            )
+                        }
 
-                recyclerView.adapter = BlogAdapter(blogList)
-                swipeRefreshLayout.isRefreshing = false
+                        recyclerView.adapter = BlogAdapter(blogList)
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                    .addOnFailureListener {
+                        swipeRefreshLayout.isRefreshing = false
+                        Toast.makeText(this, "Failed to fetch blogs", Toast.LENGTH_SHORT).show()
+                    }
             }
-            .addOnFailureListener { exception ->
+            .addOnFailureListener {
                 swipeRefreshLayout.isRefreshing = false
-                Toast.makeText(this, "Failed to load blogs: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to load saved data", Toast.LENGTH_SHORT).show()
             }
     }
+
+
 
     private suspend fun loadImageFromUrl(url: String): Bitmap? = withContext(Dispatchers.IO) {
         return@withContext try {

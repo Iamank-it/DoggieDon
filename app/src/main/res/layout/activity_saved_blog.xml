@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    tools:context=".activity.SavedBlogActivity">
+
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="casual"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Profile Icon -->
+    <ImageButton
+        android:id="@+id/btn_profile"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circular_button_background"
+        android:scaleType="centerCrop"
+        android:padding="0dp"
+        android:contentDescription="@string/profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dogpfp" />
+
+    <!-- Section Title -->
+    <TextView
+        android:id="@+id/textSectionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/saved_blogs"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/heading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- SwipeRefresh & Blog List -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshUserBlogs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/textSectionTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Blog List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/userBlogRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:clipToPadding="false" />
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/text_empty_blogs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_saved_blogs"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:textColor="@android:color/darker_gray"
+                android:visibility="gone"
+                android:layout_gravity="center" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
