@@ -98,6 +98,36 @@
             app:layout_constraintTop_toBottomOf="@+id/cardPost" />
 
         <!-- Like, Count, Save Actions -->
+
+        <Button
+            android:id="@+id/btnCardDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/blue"
+            android:text="@string/delete"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:cornerRadius="8dp"
+            app:layout_constraintStart_toEndOf="@+id/btnCardReadmore"
+            app:layout_constraintTop_toBottomOf="@+id/cardPost" />
+        <Button
+            android:id="@+id/btnCardEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/blue"
+            android:text="@string/edit"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:cornerRadius="8dp"
+            app:layout_constraintStart_toEndOf="@+id/btnCardDelete"
+            app:layout_constraintTop_toBottomOf="@+id/cardPost" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

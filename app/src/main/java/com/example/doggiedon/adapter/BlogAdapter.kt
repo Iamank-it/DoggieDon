@@ -2,9 +2,11 @@ package com.example.doggiedon.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.doggiedon.R
+import com.example.doggiedon.activity.BlogActivity
 import com.example.doggiedon.activity.BlogDetailActivity
 import com.example.doggiedon.databinding.BlogItemBinding
 import com.example.doggiedon.model.BlogItemModel
@@ -12,8 +14,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
+interface OnBlogDeleteListener {
+    fun onDeleteBlog(model: BlogItemModel)
+}
 
-class BlogAdapter(private val items: MutableList<BlogItemModel>) :
+
+class BlogAdapter(
+    private val items: MutableList<BlogItemModel>,
+    private val isViewOnly: Boolean = false,
+    private val onBlogDeleteListener: OnBlogDeleteListener? = null
+) :
     RecyclerView.Adapter<BlogAdapter.BlogViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlogViewHolder {
@@ -22,17 +32,48 @@ class BlogAdapter(private val items: MutableList<BlogItemModel>) :
     }
 
     override fun onBindViewHolder(holder: BlogViewHolder, position: Int) {
-        holder.bind(items[position])
+        val model = items[position]
+        holder.bind(model)
+
+        holder.binding.btnCardEdit.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, BlogActivity::class.java).apply {
+                putExtra("blogId", model.blogId)
+                putExtra("heading", model.heading)
+                putExtra("post", model.post)
+            }
+            context.startActivity(intent)
+        }
     }
+
 
     override fun getItemCount(): Int = items.size
 
-    inner class BlogViewHolder(private val binding: BlogItemBinding) :
+    inner class BlogViewHolder(internal val binding: BlogItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: BlogItemModel) {
             val context = binding.root.context
             val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+            // View-only mode
+            if (isViewOnly) {
+                binding.btnCardLike.visibility = View.GONE
+                binding.btnCardSave.visibility = View.GONE
+                binding.cardLikecount.visibility = View.GONE
+                binding.btnCardDelete.visibility = View.VISIBLE
+                binding.btnCardEdit.visibility = View.VISIBLE
+
+                binding.btnCardDelete.setOnClickListener {
+                    onBlogDeleteListener?.onDeleteBlog(model)
+                }
+            } else {
+                binding.btnCardLike.visibility = View.VISIBLE
+                binding.btnCardSave.visibility = View.VISIBLE
+                binding.cardLikecount.visibility = View.VISIBLE
+                binding.btnCardDelete.visibility = View.GONE
+                binding.btnCardEdit.visibility = View.GONE
+            }
 
             // Set data
             binding.cardHeading.text = model.heading
@@ -48,6 +89,8 @@ class BlogAdapter(private val items: MutableList<BlogItemModel>) :
                 if (isLiked) R.drawable.redheart else R.drawable.heart
             )
 
+
+
             // Read more
             binding.btnCardReadmore.setOnClickListener {
                 val intent = Intent(context, BlogDetailActivity::class.java).apply {
@@ -56,12 +99,11 @@ class BlogAdapter(private val items: MutableList<BlogItemModel>) :
                     putExtra("date", model.date)
                     putExtra("post", model.post)
                     putExtra("blogId", model.blogId)
-
                 }
                 context.startActivity(intent)
             }
 
-            //save blog
+            // Save blog
             val isSaved = model.savedby.contains(currentUserId)
             binding.btnCardSave.setImageResource(
                 if (isSaved) R.drawable.saved else R.drawable.save
@@ -89,11 +131,10 @@ class BlogAdapter(private val items: MutableList<BlogItemModel>) :
                 }
             }
 
-            // Like button click
+            // Like blog
             var isUpdating = false
-
             binding.btnCardLike.setOnClickListener {
-                if (isUpdating) return@setOnClickListener // Prevent multiple taps
+                if (isUpdating) return@setOnClickListener
 
                 currentUserId?.let { uid ->
                     isUpdating = true
@@ -124,12 +165,13 @@ class BlogAdapter(private val items: MutableList<BlogItemModel>) :
                             model.likecount += 1
                         }
                         notifyItemChanged(adapterPosition)
-                        isUpdating = false // Reset flag
+                        isUpdating = false
                     }.addOnFailureListener {
-                        isUpdating = false // Ensure flag is reset on error too
+                        isUpdating = false
                     }
                 }
             }
         }
+
     }
 }

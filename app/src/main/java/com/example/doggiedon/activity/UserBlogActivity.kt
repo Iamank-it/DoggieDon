@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.doggiedon.R
 import com.example.doggiedon.adapter.BlogAdapter
+import com.example.doggiedon.adapter.OnBlogDeleteListener
 import com.example.doggiedon.model.BlogItemModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,7 +37,8 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class UserBlogActivity : AppCompatActivity() {
+class UserBlogActivity : AppCompatActivity(), OnBlogDeleteListener {
+
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyTextView: TextView
@@ -61,6 +63,7 @@ class UserBlogActivity : AppCompatActivity() {
         }
 
 
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -74,7 +77,7 @@ class UserBlogActivity : AppCompatActivity() {
         emptyTextView = findViewById(R.id.text_empty_blogs)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = BlogAdapter(blogList)
+        adapter = BlogAdapter(blogList, isViewOnly = true, onBlogDeleteListener = this)
         recyclerView.adapter = adapter
 
         swipeRefreshLayout.setOnRefreshListener { fetchUserBlogs() }
@@ -116,6 +119,7 @@ class UserBlogActivity : AppCompatActivity() {
                             username = username,
                             date = dateString,
                             post = post,
+                            blogId = document.id,
                             likecount = likecount
                         )
                     )
@@ -152,6 +156,36 @@ class UserBlogActivity : AppCompatActivity() {
         canvas.drawCircle(size / 2f, size / 2f, size / 2f, paint)
         return output
     }
+
+    override fun onDeleteBlog(model: BlogItemModel) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Delete Blog")
+        builder.setMessage("Are you sure you want to delete this blog?")
+
+        builder.setPositiveButton("Delete") { _, _ ->
+            val db = FirebaseFirestore.getInstance()
+            db.collection("blogs")
+                .document(model.blogId)
+                .delete()
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Blog deleted successfully", Toast.LENGTH_SHORT).show()
+                    blogList.remove(model)
+                    adapter.notifyDataSetChanged()
+                    emptyTextView.visibility = if (blogList.isEmpty()) View.VISIBLE else View.GONE
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to delete blog: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.create().show()
+    }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

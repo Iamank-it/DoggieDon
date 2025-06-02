@@ -25,7 +25,6 @@ import kotlinx.coroutines.withContext
 import java.net.URL
 
 class BlogActivity : AppCompatActivity() {
-
     private lateinit var etHeading: EditText
     private lateinit var etPost: EditText
     private lateinit var btnSubmit: Button
@@ -34,9 +33,8 @@ class BlogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blog)
 
-        //profile btn
+        // Profile image setup...
         val btnProfile = findViewById<ImageButton>(R.id.btn_profile)
-
         FirebaseAuth.getInstance().currentUser?.photoUrl?.toString()?.let {
             scope.launch {
                 loadImageFromUrl(it)?.let { bmp ->
@@ -45,15 +43,31 @@ class BlogActivity : AppCompatActivity() {
             }
         }
 
-
         etHeading = findViewById(R.id.etHeading)
         etPost = findViewById(R.id.etPost)
         btnSubmit = findViewById(R.id.btnSubmit)
 
-        btnSubmit.setOnClickListener {
-            addBlogPost()
+        // Check for edit mode
+        val blogId = intent.getStringExtra("blogId")
+        val heading = intent.getStringExtra("heading")
+        val post = intent.getStringExtra("post")
+
+        if (blogId != null && heading != null && post != null) {
+            // Edit mode
+            etHeading.setText(heading)
+            etPost.setText(post)
+            btnSubmit.text = "Update Blog"
+            btnSubmit.setOnClickListener {
+                updateBlogPost(blogId)
+            }
+        } else {
+            // Add mode
+            btnSubmit.setOnClickListener {
+                addBlogPost()
+            }
         }
     }
+
 
     private fun addBlogPost() {
         val heading = etHeading.text.toString().trim()
@@ -87,12 +101,44 @@ class BlogActivity : AppCompatActivity() {
             .add(blogMap)
             .addOnSuccessListener {
                 Toast.makeText(this, "Blog added successfully", Toast.LENGTH_SHORT).show()
-                finish()  // Close AddBlogActivity and return to previous screen
+                finish()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to add blog: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    private fun updateBlogPost(blogId: String) {
+        val updatedHeading = etHeading.text.toString().trim()
+        val updatedPost = etPost.text.toString().trim()
+
+        if (updatedHeading.isEmpty()) {
+            etHeading.error = "Heading required"
+            return
+        }
+
+        if (updatedPost.isEmpty()) {
+            etPost.error = "Post content required"
+            return
+        }
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("blogs")
+            .document(blogId)
+            .update(
+                mapOf(
+                    "heading" to updatedHeading,
+                    "post" to updatedPost
+                )
+            )
+            .addOnSuccessListener {
+                Toast.makeText(this, "Blog updated successfully", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to update blog: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     private suspend fun loadImageFromUrl(url: String): Bitmap? = withContext(Dispatchers.IO) {
         return@withContext try {
             BitmapFactory.decodeStream(URL(url).openStream())
@@ -112,6 +158,8 @@ class BlogActivity : AppCompatActivity() {
         canvas.drawCircle(size / 2f, size / 2f, size / 2f, paint)
         return output
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
