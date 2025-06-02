@@ -38,44 +38,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        //search view
-        val searchView = findViewById<SearchView>(R.id.search_bar)
-        val searchButton = findViewById<ImageButton>(R.id.btn_search)
-
-        searchButton.setOnClickListener {
-            val query = searchView.query.toString().trim()
-            if (query.isNotEmpty()) {
-                val filteredList = blogList.filter {
-                    it.heading.contains(query, ignoreCase = true) ||
-                            it.post.contains(query, ignoreCase = true) ||
-                            it.username.contains(query, ignoreCase = true)
-                }
-                recyclerView.adapter = BlogAdapter(filteredList.toMutableList())
-            } else {
-                recyclerView.adapter = BlogAdapter(blogList) // Reset to full list
-            }
-        }
-
-        // Reset list when search is cleared
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrEmpty()) {
-                    recyclerView.adapter = BlogAdapter(blogList)
-                }
-                return true
-            }
-        })
-
-        //sort button logic
-        val filterButton = findViewById<ImageButton>(R.id.btn_filter)
-
-        filterButton.setOnClickListener {
-            showSortOptions()
-        }
-
-
         //Add Blog button click handle
         val fabAddBlog = findViewById<FloatingActionButton>(R.id.fab_add_blog)
         fabAddBlog.setOnClickListener {
@@ -116,6 +78,44 @@ class MainActivity : AppCompatActivity() {
         btnProfile.setOnClickListener {
             startActivity(Intent(this, ProfileInfo::class.java))
         }
+        //search view
+        val searchView = findViewById<SearchView>(R.id.search_bar)
+        val searchButton = findViewById<ImageButton>(R.id.btn_search)
+
+        searchButton.setOnClickListener {
+            val query = searchView.query.toString().trim()
+            if (query.isNotEmpty()) {
+                val filteredList = blogList.filter {
+                    it.heading.contains(query, ignoreCase = true) ||
+                            it.post.contains(query, ignoreCase = true) ||
+                            it.username.contains(query, ignoreCase = true)
+                }
+                recyclerView.adapter = BlogAdapter(filteredList.toMutableList())
+            } else {
+                recyclerView.adapter = BlogAdapter(blogList) // Reset to full list
+            }
+        }
+
+        // Reset list when search is cleared
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    recyclerView.adapter = BlogAdapter(blogList)
+                }
+                return true
+            }
+        })
+
+        //sort button logic
+        val filterButton = findViewById<ImageButton>(R.id.btn_filter)
+
+        filterButton.setOnClickListener {
+            showSortOptions()
+        }
+
+
     }
 
     private fun fetchBlogsFromFirestore() {
@@ -136,11 +136,13 @@ class MainActivity : AppCompatActivity() {
                     .addOnSuccessListener { result ->
                         blogList.clear()
                         for (document in result) {
-                            val blogId = document.id
                             val heading = document.getString("heading") ?: ""
                             val username = document.getString("username") ?: ""
                             val post = document.getString("post") ?: ""
                             val likecount = document.getLong("likecount")?.toInt() ?: 0
+                            val savedby = document.get("savedby") as? MutableList<String> ?: mutableListOf()
+                            val likedby = document.get("likedby") as? MutableList<String> ?: mutableListOf()
+                            val blogId = document.id
 
                             val timestamp = document.getTimestamp("date")
                             val dateString = timestamp?.toDate()?.let {
@@ -149,13 +151,15 @@ class MainActivity : AppCompatActivity() {
 
                             blogList.add(
                                 BlogItemModel(
+                                    blogId = blogId,
                                     heading = heading,
                                     username = username,
                                     date = dateString,
                                     post = post,
                                     likecount = likecount,
+                                    likedby = likedby,
                                     isSaved = savedBlogIds.contains(blogId),
-                                    blogId = blogId
+                                    savedby = savedby
                                 )
                             )
                         }

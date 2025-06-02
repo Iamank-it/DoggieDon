@@ -91,7 +91,35 @@
             android:layout_height="wrap_content"
             android:lineSpacingExtra="4dp"
             android:text="Full blog post content goes here..."
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:paddingBottom="150dp"/>
     </ScrollView>
+    <!-- FloatingActionButton for Like -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/like"
+        android:src="@drawable/heart"
+        app:backgroundTint="@color/like_button_color"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/fab_save"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- FloatingActionButton for Save -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/save"
+        android:src="@drawable/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/save_button_color"
+        app:tint="@android:color/white"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

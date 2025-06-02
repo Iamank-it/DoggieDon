@@ -143,4 +143,7 @@
     <color name="blue">#2962FF</color>
     <color name="black">#000000</color>
     <color name="datecolor">#F40000</color>
+    <color name="like_button_color">#E91E63</color> <!-- Pink -->
+    <color name="save_button_color">#3F51B5</color> <!-- Indigo -->
+
 </resources>

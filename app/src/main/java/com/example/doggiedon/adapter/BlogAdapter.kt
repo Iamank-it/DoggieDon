@@ -55,6 +55,8 @@ class BlogAdapter(private val items: MutableList<BlogItemModel>) :
                     putExtra("username", model.username)
                     putExtra("date", model.date)
                     putExtra("post", model.post)
+                    putExtra("blogId", model.blogId)
+
                 }
                 context.startActivity(intent)
             }
