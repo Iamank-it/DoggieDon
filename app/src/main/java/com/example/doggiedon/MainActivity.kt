@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.*
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,44 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        //search view
+        val searchView = findViewById<SearchView>(R.id.search_bar)
+        val searchButton = findViewById<ImageButton>(R.id.btn_search)
+
+        searchButton.setOnClickListener {
+            val query = searchView.query.toString().trim()
+            if (query.isNotEmpty()) {
+                val filteredList = blogList.filter {
+                    it.heading.contains(query, ignoreCase = true) ||
+                            it.post.contains(query, ignoreCase = true) ||
+                            it.username.contains(query, ignoreCase = true)
+                }
+                recyclerView.adapter = BlogAdapter(filteredList.toMutableList())
+            } else {
+                recyclerView.adapter = BlogAdapter(blogList) // Reset to full list
+            }
+        }
+
+        // Reset list when search is cleared
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    recyclerView.adapter = BlogAdapter(blogList)
+                }
+                return true
+            }
+        })
+
+        //sort button logic
+        val filterButton = findViewById<ImageButton>(R.id.btn_filter)
+
+        filterButton.setOnClickListener {
+            showSortOptions()
+        }
+
 
         //Add Blog button click handle
         val fabAddBlog = findViewById<FloatingActionButton>(R.id.fab_add_blog)
@@ -161,4 +200,25 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         scope.cancel()
     }
+
+    private fun showSortOptions() {
+        val options = arrayOf("A-Z", "Z-A", "By Date", "By Like Count")
+
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("Sort Blogs By")
+        builder.setItems(options) { _, which ->
+            val sortedList = when (which) {
+                0 -> blogList.sortedBy { it.heading.lowercase(Locale.ROOT) } // A-Z
+                1 -> blogList.sortedByDescending { it.heading.lowercase(Locale.ROOT) } // Z-A
+                2 -> blogList.sortedByDescending { SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).parse(it.date) } // Newest first
+                3 -> blogList.sortedByDescending { it.likecount } // Most liked
+                else -> blogList
+            }
+            recyclerView.adapter = BlogAdapter(sortedList.toMutableList())
+        }
+        builder.show()
+    }
+
 }
+
+

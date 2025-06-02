@@ -34,20 +34,52 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/dogpfp" />
 
-    <SearchView
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_search"
-        android:backgroundTint="#EDD9D9"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search"
-        app:layout_constraintEnd_toEndOf="@+id/btn_profile"
-        app:layout_constraintStart_toStartOf="@+id/heading"
-        app:layout_constraintTop_toBottomOf="@+id/heading" />
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/heading">
+
+        <SearchView
+            android:id="@+id/search_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:queryHint="Search"
+            android:iconifiedByDefault="false"
+            android:background="@drawable/rounded_search"
+            android:backgroundTint="#EDD9D9"/>
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_white_rounded"
+            android:padding="6dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/search_icon"
+            android:scaleType="centerInside"
+            android:contentDescription="Search Blog"/>
+
+        <ImageButton
+            android:id="@+id/btn_filter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_white_rounded"
+            android:contentDescription="Sort"
+            android:scaleType="centerInside"
+            android:src="@drawable/sort" />
+
+    </LinearLayout>
+
 
     <!-- SwipeRefresh + RecyclerView -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -55,9 +87,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/search_bar"
-        app:layout_constraintStart_toStartOf="@+id/search_bar"
-        app:layout_constraintTop_toBottomOf="@id/search_bar">
+        app:layout_constraintEnd_toEndOf="@id/searchContainer"
+        app:layout_constraintStart_toStartOf="@id/searchContainer"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/blogRecyclerView"

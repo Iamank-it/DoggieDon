@@ -1,5 +1,4 @@
 package com.example.doggiedon.activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
@@ -14,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.createBitmap
 import com.example.doggiedon.R
-import com.example.doggiedon.register.ProfileInfo
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

@@ -1,7 +1,6 @@
 package com.example.doggiedon.activity
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
@@ -25,7 +24,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.doggiedon.R
 import com.example.doggiedon.adapter.BlogAdapter
 import com.example.doggiedon.model.BlogItemModel
-import com.example.doggiedon.register.ProfileInfo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -73,7 +71,7 @@ class UserBlogActivity : AppCompatActivity() {
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshUserBlogs)
         recyclerView = findViewById(R.id.userBlogRecyclerView)
-        emptyTextView = findViewById(R.id.text_empty_blogs) // Add this to layout
+        emptyTextView = findViewById(R.id.text_empty_blogs)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = BlogAdapter(blogList)

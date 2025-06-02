@@ -1,7 +1,6 @@
 package com.example.doggiedon.activity
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
@@ -24,7 +23,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.doggiedon.R
 import com.example.doggiedon.adapter.BlogAdapter
 import com.example.doggiedon.model.BlogItemModel
-import com.example.doggiedon.register.ProfileInfo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope

@@ -1,6 +1,4 @@
 package com.example.doggiedon.activity
-
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
@@ -13,7 +11,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.createBitmap
 import com.example.doggiedon.R
-import com.example.doggiedon.register.ProfileInfo
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
