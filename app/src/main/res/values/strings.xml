@@ -29,4 +29,5 @@
     <string name="save">Save</string>
     <string name="like">Like</string>
     <string name="no_saved_blogs">No Saved Blog</string>
+    <string name="open_website">Open Website</string>
 </resources>

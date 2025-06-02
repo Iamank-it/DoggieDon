@@ -21,8 +21,8 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.core.graphics.createBitmap
-import com.example.doggiedon.activity.BlogActivity
 import com.example.doggiedon.activity.UserBlogActivity
+import com.example.doggiedon.activity.WebViewerActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -47,6 +47,13 @@ class ProfileInfo : AppCompatActivity() {
 
         val viewBlogBtn = findViewById<Button>(R.id.btn_view_blog)
 
+        //to open our website
+        val websiteFab = findViewById<FloatingActionButton>(R.id.fab_open_website)
+        websiteFab.setOnClickListener {
+            val intent = Intent(this, WebViewerActivity::class.java)
+            intent.putExtra("url", "https://www.google.com")
+            startActivity(intent)
+        }
 
 
         // Set user info
