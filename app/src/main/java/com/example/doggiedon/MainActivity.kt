@@ -3,6 +3,8 @@ package com.example.doggiedon
 import android.content.Intent
 import android.graphics.*
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.Toast
@@ -80,6 +82,14 @@ class MainActivity : AppCompatActivity() {
         }
         //search view
         val searchView = findViewById<SearchView>(R.id.search_bar)
+        val searchIconId = searchView.context.resources.getIdentifier("android:id/search_mag_icon", null, null)
+        val searchIcon = searchView.findViewById<View>(searchIconId)
+        searchIcon?.layoutParams = ViewGroup.LayoutParams(0, 0) // Shrink it
+        searchIcon?.visibility = View.GONE
+        val searchPlateId = searchView.context.resources.getIdentifier("android:id/search_plate", null, null)
+        val searchPlate = searchView.findViewById<View>(searchPlateId)
+        searchPlate?.setBackgroundColor(Color.TRANSPARENT)
+
         val searchButton = findViewById<ImageButton>(R.id.btn_search)
 
         searchButton.setOnClickListener {
