@@ -51,7 +51,7 @@ class ProfileInfo : AppCompatActivity() {
         val websiteFab = findViewById<FloatingActionButton>(R.id.fab_open_website)
         websiteFab.setOnClickListener {
             val intent = Intent(this, WebViewerActivity::class.java)
-            intent.putExtra("url", "https://www.google.com")
+            intent.putExtra("url", "https://doggiedon-landing.vercel.app/")
             startActivity(intent)
         }
 

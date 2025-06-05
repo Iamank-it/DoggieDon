@@ -11,7 +11,7 @@ class WebViewerActivity : AppCompatActivity() {
         val webView = WebView(this)
         setContentView(webView)
 
-        val url = intent.getStringExtra("url") ?: "https://www.google.com"
+        val url = intent.getStringExtra("url") ?: "https://doggiedon-landing.vercel.app/"
 
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
